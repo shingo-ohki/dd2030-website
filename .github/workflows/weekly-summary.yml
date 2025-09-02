@@ -23,18 +23,19 @@ jobs:
         gh auth status || echo "GitHub CLIの認証に問題があります"
   
     - name: Checkout dd2030-website repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         path: dd2030-website
         ref: main
         fetch-depth: 0
 
     - name: Checkout oss_weekly_reporter repository (main branch)
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         repository: nishio/oss_weekly_reporter
         ref: main
         path: oss_weekly_reporter
+        fetch-depth: 0
 
     - name: Get latest data directory (fetch data branch first)
       id: get_latest_data
