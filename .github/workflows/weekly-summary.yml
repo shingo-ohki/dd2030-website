@@ -34,17 +34,45 @@ jobs:
         ref: main
         path: oss_weekly_reporter
 
-    - name: Get latest data directory
+    - name: Get latest data directory (fetch data branch first)
       id: get_latest_data
       run: |
-        latest_data_dir=$(git -C oss_weekly_reporter ls-tree -d --name-only origin/data data/ | sort | tail -n 1)
-        echo "latest_data_dir=${latest_data_dir}" >> $GITHUB_ENV
-        echo "Latest data directory: ${latest_data_dir}"
+        set -euo pipefail
 
-    - name: Fetch data directory from data branch
+        # fetch remote data branch into local branch named 'data'
+        git -C oss_weekly_reporter fetch origin data:data
+
+        latest_dir=$(git -C oss_weekly_reporter ls-tree -r --name-only data \
+          | grep -E '^data/' \
+          | awk -F'/' '{print $2}' \
+          | sort -u \
+          | tail -n1 || true)
+
+        if [ -z "${latest_dir:-}" ]; then
+          echo "ERROR: no data directories found in oss_weekly_reporter:data" >&2
+          exit 1
+        fi
+
+        latest_path="data/${latest_dir}"
+        echo "latest_data_dir=${latest_path}" >> $GITHUB_ENV
+        echo "Latest data directory: ${latest_path}"
+
+    - name: Checkout only the latest data directory from data branch
       run: |
-        git -C oss_weekly_reporter fetch origin data:data-branch
-        git -C oss_weekly_reporter checkout data-branch -- ${{ env.latest_data_dir }}
+        set -euo pipefail
+
+        latest="${{ env.latest_data_dir }}"
+        if [ -z "$latest" ]; then
+          echo "env.latest_data_dir is empty" >&2
+          exit 1
+        fi
+
+        echo "Checking out ${latest} from local branch 'data' into oss_weekly_reporter/"
+        # checkout the specific path from the local 'data' branch fetched earlier
+        git -C oss_weekly_reporter checkout data -- "$latest"
+
+        echo "Checked out:"
+        ls -la "oss_weekly_reporter/${latest}" || true
 
     - name: Setup Python
       uses: actions/setup-python@v4
