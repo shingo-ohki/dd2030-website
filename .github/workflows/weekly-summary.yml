@@ -105,19 +105,19 @@ jobs:
         fi
         echo "OPENAI_API_KEY is set (secret value is not displayed)."
 
-    # - name: Generate OpenAI summary for Slack data
-    #   working-directory: oss_weekly_reporter
-    #   env:
-    #     OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-    #   run: |
-    #     python -m src.call_openai_api slack --all-summary
+    - name: Generate OpenAI summary for Slack data
+      working-directory: oss_weekly_reporter
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      run: |
+        python -m src.call_openai_api slack --all-summary
 
-    # - name: Generate OpenAI summary for GitHub data (kouchou-ai)
-    #   working-directory: oss_weekly_reporter
-    #   env:
-    #     OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-    #   run: |
-    #     python -m src.call_openai_api github --repo "digitaldemocracy2030/kouchou-ai" --prompt-file "./prompts/kouchou_prompt.txt"
+    - name: Generate OpenAI summary for GitHub data (kouchou-ai)
+      working-directory: oss_weekly_reporter
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      run: |
+        python -m src.call_openai_api github --repo "digitaldemocracy2030/kouchou-ai" --prompt-file "./prompts/kouchou_prompt.txt"
 
     - name: Generate OpenAI summary for GitHub data (idobata)
       working-directory: oss_weekly_reporter
@@ -126,19 +126,19 @@ jobs:
       run: |
          python -m src.call_openai_api github --repo "digitaldemocracy2030/idobata" --prompt-file "./prompts/idobata_prompt.txt"
 
-    # - name: Generate OpenAI summary for GitHub data (website)
-    #   working-directory: oss_weekly_reporter
-    #   env:
-    #     OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-    #   run: |
-    #     python -m src.call_openai_api github --repo "digitaldemocracy2030/website" --prompt-file "./prompts/website_prompt.txt"
+    - name: Generate OpenAI summary for GitHub data (website)
+      working-directory: oss_weekly_reporter
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      run: |
+        python -m src.call_openai_api github --repo "digitaldemocracy2030/website" --prompt-file "./prompts/website_prompt.txt"
 
-    # - name: Generate OpenAI summary for GitHub data (polimoney)
-    #   working-directory: oss_weekly_reporter
-    #   env:
-    #     OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-    #   run: |
-    #     python -m src.call_openai_api github --repo "digitaldemocracy2030/polimoney" --prompt-file "./prompts/polimoney_prompt.txt"
+    - name: Generate OpenAI summary for GitHub data (polimoney)
+      working-directory: oss_weekly_reporter
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      run: |
+        python -m src.call_openai_api github --repo "digitaldemocracy2030/polimoney" --prompt-file "./prompts/polimoney_prompt.txt"
 
     - name: Copy summary data to working directory
       run: |
