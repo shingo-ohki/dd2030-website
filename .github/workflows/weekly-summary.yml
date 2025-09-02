@@ -30,9 +30,9 @@ jobs:
     - name: Get latest data directory
       id: get_latest_data
       run: |
-      latest_data_dir=$(git -C oss_weekly_reporter ls-tree -d --name-only origin/data data/ | sort | tail -n 1)
-      echo "latest_data_dir=${latest_data_dir}" >> $GITHUB_ENV
-      echo "Latest data directory: ${latest_data_dir}"
+        latest_data_dir=$(git -C oss_weekly_reporter ls-tree -d --name-only origin/data data/ | sort | tail -n 1)
+        echo "latest_data_dir=${latest_data_dir}" >> $GITHUB_ENV
+        echo "Latest data directory: ${latest_data_dir}"
 
     - name: Fetch data directory from data branch
       run: |
